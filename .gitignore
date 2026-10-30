@@ -1,0 +1,27 @@
+# --- Large binary backups (reference-only; kept out of version control) ---
+# The original SQL Server .mdf and the backup archives are not migrated.
+# See design/LinkittyDo/Backups/README.md and plan/02-data-model.md.
+design/LinkittyDo/Backups/*.zip
+*.mdf
+*.ldf
+*.bak
+
+# --- Secrets / local config (never commit) ---
+.env
+*.env
+connectionStrings.config
+connectionStrings.*.config
+!connectionStrings.config.example
+
+# --- Build output / dependencies ---
+bin/
+obj/
+dist/
+node_modules/
+packages/
+
+# --- Editor / OS ---
+.vs/
+.idea/
+Thumbs.db
+.DS_Store
