@@ -32,10 +32,11 @@
 
 ## Open questions for the product owner
 
-1. **O1 — Domains/hosting (resolved for the API):** the **API is consolidated into
+1. **O1 — Domains/hosting (resolved):** the **API is consolidated into
    `api.infogoer.com`** (prod `https://api.infogoer.com`, deployed via the infogoer
-   FTPS scripts). **Still open:** the SPA's public domain (keep `www.linkittydo.com`?)
-   and its `FTP_REMOTE_PATH` on `ftp.infogoer.com`.
+   FTPS scripts). The **SPA keeps `www.linkittydo.com` / `linkittydo.com`**, deployed
+   to `ftp.infogoer.com`; its exact `FTP_REMOTE_PATH` lives in the repo's git‑ignored
+   `.env` and is set at deploy time (never committed).
 2. **O2 — Providers & keys:** which **web‑search provider** for clue discovery;
    **email** provider for activation/recovery; **ReCaptcha** site/secret keys.
    (These are *locations of secrets* only — never committed.)
