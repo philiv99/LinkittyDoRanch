@@ -9,7 +9,8 @@ itself changes in the implementing repos (`api.infogoer.com`, `linkittydo-web`).
   of a new `api.linkittydo.com`. Updated base URLs (dev `:10152`, prod
   `https://api.infogoer.com`), DB names (`ExploreInfoGoer` / `ExploreInfoGoer_Test`,
   app user `BirdMan`), and the schema location (`db/linkittydo/schema.sql`). Resolves
-  open question **O1** for the API; recorded as decision **D12**. Superseded
+  open question **O1** (API on `api.infogoer.com`; SPA stays `www.linkittydo.com`);
+  recorded as decision **D12**. Superseded
   `projects/api.linkittydo.com.PROJECT.md` with a pointer stub.
 - **`linkittydo-web` adopts the agentic react-spa deployment workflow**
   (`agentic/templates/deployment/react-spa/` + the `setup-spa-deployment` skill):
