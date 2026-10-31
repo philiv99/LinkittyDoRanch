@@ -4,18 +4,18 @@ Testing is **mandatory** on both stacks: new or changed behavior ships with
 **unit + integration** tests, both suites pass locally via `verify.ps1` before
 push, and CI is a thin re‑run. Deployment is human‑run, API‑before‑SPA.
 
-## API — `api.linkittydo.com` (dotnet‑webapi)
+## API — `api.infogoer.com` (dotnet‑webapi, consolidated backend)
 
 Per the [dotnet-webapi profile](../../agentic/stacks/dotnet-webapi.md):
 
-- **Test project:** a sibling `LinkittyDo.Api.Tests` (`net472`, `packages.config`)
-  using **xUnit** + **Moq**.
+- **Test project:** `V1.Tests` (`net472`, SDK‑style `PackageReference`) in
+  `api.infogoer.com` using **xUnit** + **Moq**.
 - **Unit tests** — Logic managers, scoring/weighting, parser result mapping,
   profile interpretation, validators — with **EF6 and external calls (parser,
   WordNet, search provider) mocked**. Mirror the namespace under test.
 - **Integration tests** (`Integration/` folder) — each controller route
-  end‑to‑end against a dedicated **`linkittydo_test`** MySQL database (schema from
-  `db/schema.sql`), via OWIN/self‑host `TestServer` or a locally started API with
+  end‑to‑end against a dedicated **`ExploreInfoGoer_Test`** MySQL database (schema
+  from `db/linkittydo/schema.sql`), gated by `INFOGOER_TEST_BASEURL` and driven with
   `HttpClient`. Assert status codes, payload shape, auth/role enforcement,
   `sysversion` conflict (`409`), and a **CORS preflight**.
 - **Gated behind the test DB** so unit tests always run without a database.
@@ -45,8 +45,8 @@ Per the [react-spa profile](../../agentic/stacks/react-spa.md):
 Each repo has a `verify.ps1` that **installs, builds, and runs unit +
 integration** suites and must be **green before any commit/push**:
 
-- **API:** restore `packages.config` → MSBuild Release → ensure `linkittydo_test`
-  schema loaded → `vstest.console.exe` unit + integration.
+- **API:** restore → MSBuild Release (`V1`) → `dotnet test` (`V1.Tests`); integration
+  tests self‑skip unless `INFOGOER_TEST_BASEURL` points at an `ExploreInfoGoer_Test`‑backed API.
 - **WEB:** `npm ci` → build → `jest --ci --coverage` (unit + integration).
 
 `verify.ps1` runs **only locally** (it needs DB/credentials a GitHub runner
@@ -74,8 +74,9 @@ human review + local `verify.ps1` is the gate.
   - **API** — PowerShell FTPS: publish Release → back up live site + DB → read‑only
     pre‑deploy validation → upload → generate the git‑ignored connection‑string
     file for prod → post‑deploy smoke test.
-  - **WEB** — `ftp-deploy` of `dist/` after a build; credentials from a git‑ignored
-    `.env` (the script aborts if unset).
+  - **WEB** — the agentic react-spa deployment workflow: `npm run deploy`
+    (`webpack.prod.js` → `dist/`, then `node ftpdeploy.js` to `ftp.infogoer.com`);
+    credentials from a git‑ignored `.env` (aborts if `FTP_*` unset).
 - **Rollback:** redeploy the previous tagged commit; because schema changes stay
   backward‑compatible with the prior API version, an API rollback is safe without a
   DB restore (keep the pre‑deploy DB backup regardless).

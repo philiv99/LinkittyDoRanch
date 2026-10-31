@@ -1,15 +1,15 @@
 # 03 — API Contract
 
-The versioned HTTP contract owned by
-[`api.linkittydo.com`](./projects/api.linkittydo.com.PROJECT.md). All routes are
+The versioned HTTP contract owned by the consolidated
+[`api.infogoer.com`](https://github.com/philiv99/api.infogoer.com) backend. All routes are
 JSON over HTTPS under the base path **`/api`**. The SPA is the only consumer today,
 but endpoints are designed as a stable contract. This inventory is the
 authoritative route list referenced from the API repo's `PROJECT.md`.
 
 ## Conventions
 
-- **Base URLs** — dev `http://localhost:52080/api`, prod
-  `https://api.linkittydo.com/api`.
+- **Base URLs** — dev `http://localhost:10152/api`, prod
+  `https://api.infogoer.com/api`.
 - **Auth** — bearer token from `POST /api/auth/login` sent as
   `Authorization: Bearer <token>`; roles are claims. Every protected route checks
   the role **server‑side** (the SPA only hides admin UI).
@@ -144,6 +144,7 @@ A **profile** persisted in `LK_PROFILES` is the set of selected flags (as
 
 ## CORS
 
-Allowed origins: dev `http://localhost:3000`; prod `https://www.linkittydo.com`,
-`https://linkittydo.com`. Preflight (`OPTIONS`) is covered by an integration test
+Allowed origins: dev `http://localhost:8080`; prod `https://www.linkittydo.com`,
+`https://linkittydo.com` (added to the api.infogoer.com allow‑list alongside its
+existing origins). Preflight (`OPTIONS`) is covered by an integration test
 (per the [dotnet-webapi profile](../../agentic/stacks/dotnet-webapi.md)).

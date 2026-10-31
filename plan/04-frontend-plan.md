@@ -61,10 +61,13 @@ Unit‑tested **reducers, selectors, and thunks** per the react‑spa profile.
 
 ## API integration
 
-- A thin `apiClient` (fetch) reads the base URL from the **config module**
-  selected by a webpack **alias** (`config` → `config.dev.js` / `config.prod.js`),
-  so the SPA points at `http://localhost:52080/api` in dev and
-  `https://api.linkittydo.com/api` in prod.
+- A thin `apiClient` (fetch) reads the base URL (`IGAPIURL`) from the **config
+  module** selected by a webpack **alias** (`config` → `src/devconfig.js` /
+  `src/prodconfig.js`), so the SPA points at the consolidated **api.infogoer.com**
+  backend: `http://localhost:10152/api` in dev and `https://api.infogoer.com/api`
+  in prod. Build/deploy follow the agentic
+  [react-spa deployment workflow](../../agentic/templates/deployment/react-spa/README.md)
+  (`npm start` dev server on 8080; `npm run deploy` builds and FTP‑uploads `dist/`).
 - The client attaches `Authorization: Bearer <token>` from `session`; a `401`
   dispatches logout and routes to `/login`.
 - Thunks encapsulate each call; components stay presentational where practical.

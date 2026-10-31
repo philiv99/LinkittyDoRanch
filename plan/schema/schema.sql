@@ -1,10 +1,11 @@
 -- =============================================================================
 -- LinkittyDoRanch — MySQL schema (v1 DRAFT)
--- Target: MySQL 8.x, InnoDB, utf8mb4.  Engine for api.linkittydo.com (EF6).
--- This is a PLANNING draft that lives under plan/schema. The authoritative copy
--- will live in the API repo's db/ folder and be applied by the deploy/verify
--- scripts. Derived from the four original SQL Server ER diagrams; NO data is
--- migrated. See plan/02-data-model.md for column notes and deviations.
+-- Target: MySQL 8.x, InnoDB, utf8mb4.  Served by api.infogoer.com (EF6).
+-- This is the PLANNING draft under plan/schema. The authoritative copy now lives
+-- at api.infogoer.com/db/linkittydo/schema.sql and targets the ExploreInfoGoer
+-- database (the consolidated backend). Derived from the four original SQL Server
+-- ER diagrams; NO data is migrated. See plan/02-data-model.md for column notes and
+-- deviations.
 --
 -- Conventions: every table carries create_dt, update_dt, sysversion (optimistic
 -- concurrency token, EF6-mapped). IDs are INT AUTO_INCREMENT except LK_USERS.

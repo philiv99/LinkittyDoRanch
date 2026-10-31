@@ -35,6 +35,8 @@ The plan obeys the rules in the sibling [`../../agentic`](../../agentic) repo:
 | Decision | Choice |
 | --- | --- |
 | Front‑end topology | **One SPA** (`linkittydo-web`) serving both player and admin routes; admin routes gated by the `Administrator` role. |
+| Backend repo | **Consolidated into the existing `api.infogoer.com`** (shared backend, schema `ExploreInfoGoer`) — not a new `api.linkittydo.com`. |
+| SPA deployment | `linkittydo-web` uses the agentic **react-spa deployment workflow** (webpack 4 + `ftpdeploy.js` to `ftp.infogoer.com`). |
 | First release (P1) scope | Accounts & auth · Game catalog & browse · Game play · Game creation + NLP parser · Admin console. |
 | Deferred to P2/P3 | **Societies** (social) and **News / home content** polish. |
 | Data strategy | **Fresh MySQL schema**, scripted seed only. No migration of the SQL Server backup. |
@@ -45,19 +47,22 @@ The plan obeys the rules in the sibling [`../../agentic`](../../agentic) repo:
 
 | Repo | Stack | Role |
 | --- | --- | --- |
-| `philiv99/api.linkittydo.com` | [dotnet-webapi](../../agentic/stacks/dotnet-webapi.md) | Shared HTTP API: accounts, games, play, admin, parser tool, data access to MySQL. |
-| `philiv99/linkittydo-web` | [react-spa](../../agentic/stacks/react-spa.md) | Single React SPA: public game site **and** admin console (role‑gated). |
+| `philiv99/api.infogoer.com` *(existing, extended)* | [dotnet-webapi](../../agentic/stacks/dotnet-webapi.md) | Shared HTTP API: accounts, games, play, admin, parser tool, data access to MySQL. LinkittyDo is delivered into this existing backend (schema `ExploreInfoGoer`) rather than a new repo. |
+| `philiv99/linkittydo-web` *(new)* | [react-spa](../../agentic/stacks/react-spa.md) | Single React SPA: public game site **and** admin console (role‑gated); built/deployed via the agentic react-spa deployment workflow. |
 
-> The `agentic` repo itself is not modified by this plan. Registering the two new
-> repos in [agentic/consumers.json](../../agentic/consumers.json) is a one‑line
-> follow‑up performed when each repo is created (see
-> [08-risks-and-decisions.md](./08-risks-and-decisions.md)).
+> **Consolidation (confirmed):** the backend is **not** a new `api.linkittydo.com`
+> repo — LinkittyDo ships into the existing `philiv99/api.infogoer.com` (already
+> onboarded to agentic and registered in
+> [agentic/consumers.json](../../agentic/consumers.json)). Only `linkittydo-web` is a
+> new repo. See decision **D12** / open question **O1** in
+> [08-risks-and-decisions.md](./08-risks-and-decisions.md).
 
 ## Documents
 
 | # | Document | What it covers |
 | --- | --- | --- |
 | — | [README.md](./README.md) | This index. |
+| — | [CHANGELOG.md](./CHANGELOG.md) | Notable revisions to this plan. |
 | 00 | [00-product-overview.md](./00-product-overview.md) | Vision, the game in one page, agents/roles, scope. |
 | 01 | [01-architecture.md](./01-architecture.md) | System shape, repos, stacks, environments, security, CORS, and the original‑layer → new‑component mapping. |
 | 02 | [02-data-model.md](./02-data-model.md) | The MySQL schema derived from the `LK_*` tables, conventions, status enums, and seed data. |
@@ -67,7 +72,7 @@ The plan obeys the rules in the sibling [`../../agentic`](../../agentic) repo:
 | 06 | [06-roadmap-and-backlog.md](./06-roadmap-and-backlog.md) | Milestones M0–M5 (+ deferred), and the prioritized, cross‑repo issue backlog. |
 | 07 | [07-testing-ci-release.md](./07-testing-ci-release.md) | Unit + integration test strategy, `verify.ps1`, CI, versioning, and release. |
 | 08 | [08-risks-and-decisions.md](./08-risks-and-decisions.md) | Assumptions, open questions, and deferred "future" work. |
-| P | [projects/api.linkittydo.com.PROJECT.md](./projects/api.linkittydo.com.PROJECT.md) | `PROJECT.md` draft for the API repo. |
+| P | [projects/api.linkittydo.com.PROJECT.md](./projects/api.linkittydo.com.PROJECT.md) | **Superseded** pointer — the API lives in `api.infogoer.com` (see that repo's `PROJECT.md`). |
 | P | [projects/linkittydo-web.PROJECT.md](./projects/linkittydo-web.PROJECT.md) | `PROJECT.md` draft for the SPA repo. |
 | S | [schema/schema.sql](./schema/schema.sql) | Full MySQL DDL for the v1 schema. |
 
