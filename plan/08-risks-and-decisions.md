@@ -67,18 +67,20 @@ These touch the `agentic` repo or new repos and are **not** performed by this
 planning task:
 
 1. ~~Create `philiv99/api.linkittydo.com`~~ — **superseded:** the API is the existing
-   `philiv99/api.infogoer.com`. Still create **`philiv99/linkittydo-web`** and copy its
-   drafted `PROJECT.md` into the repo root; run the `setup-spa-deployment` skill to
-   install the react-spa build/deploy files.
-2. For `linkittydo-web`, run `agentic/scripts/sync.ps1 -TargetRepo <path>` and commit
-   the synced `AGENTS.md`, agents, skills, and `.agentic-version`. (`api.infogoer.com`
-   is already synced and onboarded.)
-3. Register `linkittydo-web` in [agentic/consumers.json](../../agentic/consumers.json)
-   and run `agentic/scripts/setup-labels.ps1 -Repo philiv99/linkittydo-web`.
-   (`api.infogoer.com` is already registered and labeled.)
-4. Add a multi‑root `workspaces/linkittydo.code-workspace`
-   ([workspace guide](../../agentic/guides/workspace.md)) listing `agentic`, the
-   API repo, and the SPA repo.
-5. Capture the M0 issues and begin the loop — **done for the API**
-   (`api.infogoer.com#9` foundation + `#11–#15` backlog/gaps); capture
-   `linkittydo-web` issues when that repo exists.
+   `philiv99/api.infogoer.com`. ~~Still create **`philiv99/linkittydo-web`**~~ —
+   **done:** `philiv99/linkittydo-web` created, PROJECT.md filled in from this draft,
+   synced with agentic assets. `setup-spa-deployment` skill still to run when
+   implementing `linkittydo-web#1`.
+2. ~~For `linkittydo-web`, run `agentic/scripts/sync.ps1 -TargetRepo <path>`~~ —
+   **done:** `new-repo.ps1 -Stack react-spa` bootstrapped the repo and ran sync
+   (AGENTS.md, agents, skills, .agentic-version committed).
+3. ~~Register `linkittydo-web` in [agentic/consumers.json](../../agentic/consumers.json)
+   and run `agentic/scripts/setup-labels.ps1 -Repo philiv99/linkittydo-web`~~ —
+   **done:** `agentic` PR #22 registers the repo; labels applied by `new-repo.ps1`.
+4. ~~Add a multi‑root `workspaces/linkittydo.code-workspace`~~ — **done:**
+   `workspaces/linkittydo.code-workspace` (beside the repos) lists agentic, API,
+   SPA, and plan folders.
+5. ~~Capture the M0 issues~~ — **done for both repos:**
+   API: `api.infogoer.com#9–#15` (foundation, meta/content, seed scripts, auth register,
+   CORS fix, living list); remaining M1 captured as `#20–#23`.
+   SPA: `linkittydo-web#1–#3` (deployment files, shell, API client bootstrap).

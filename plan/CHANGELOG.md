@@ -3,6 +3,25 @@
 Notable revisions to the delivery plan. The plan is documentation; the application
 itself changes in the implementing repos (`api.infogoer.com`, `linkittydo-web`).
 
+## 2026-10-31 — Follow-ups complete; M0/M1 API backlog + SPA repo created
+
+- **`api.infogoer.com` M0-API-7 seed scripts** delivered as PR #19: idempotent
+  `db/linkittydo/seed_admin.sql` + `Seed-Admin.ps1` (PBKDF2 admin seed, no
+  credentials committed) and `seed_sample_games.sql` (6 live sample games via a
+  temporary stored procedure); forward-compatible smoke test added.
+- **`api.infogoer.com` M1 backlog captured** as issues #20–#23: activate (#20),
+  login/logout/me JWT flow (#21), password recovery (#22), user/profile endpoints
+  (#23).
+- **`philiv99/linkittydo-web` created** via `agentic/scripts/new-repo.ps1
+  -Stack react-spa`; PROJECT.md filled in from this draft; AGENTS.md and agentic
+  skills synced; standard labels applied; CHANGELOG.md stub added.
+- **`agentic` consumers.json** updated to register `linkittydo-web` (PR #22).
+- **`linkittydo-web` M0 WEB issues** captured: deployment files (#1), SPA shell
+  (#2), apiClient + bootstrap (#3).
+- **`workspaces/linkittydo.code-workspace`** created listing agentic, API, SPA,
+  and plan folders.
+- **Plan §08 follow-ups** all marked done (see the revised follow-ups section).
+
 ## 2026-10-31 — Backend consolidation + SPA deployment workflow
 
 - **Backend consolidated into `api.infogoer.com`** (schema `ExploreInfoGoer`) instead
