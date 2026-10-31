@@ -15,13 +15,13 @@ API‑before‑consumer releases.
                                  │  HTTPS / JSON  (separate origin, CORS)
                                  ▼
                  ┌─────────────────────────────────────────────┐
-                 │  api.linkittydo.com  (ASP.NET Web API 2)     │
+                 │  api.infogoer.com    (ASP.NET Web API 2)     │
                  │  Api ▸ Logic ▸ Service(Tool) ▸ Data(EF6)     │
                  └───────────────┬─────────────────────────────┘
                                  │  EF6
                                  ▼
                  ┌─────────────────────────────────────────────┐
-                 │  MySQL  (linkittydo / linkittydo_test)       │
+                 │  MySQL  (ExploreInfoGoer / _Test)            │
                  └─────────────────────────────────────────────┘
 
   External (pluggable, server-side): NLP parser (OpenNLP), WordNet,
@@ -33,7 +33,7 @@ both calling one API contract.
 
 ## Repositories & stacks
 
-### `philiv99/api.linkittydo.com` — shared API
+### `philiv99/api.infogoer.com` — shared API *(existing, extended)*
 
 - **Stack:** [dotnet-webapi](../../agentic/stacks/dotnet-webapi.md) — ASP.NET Web
   API 2 on **.NET Framework 4.7.2**, **Entity Framework 6**, **MySQL**
@@ -44,13 +44,17 @@ both calling one API contract.
   below). Language choice is recorded as a decision in
   [08-risks-and-decisions.md](./08-risks-and-decisions.md).
 - **Owns:** the versioned HTTP contract, business logic (managers), the parser
-  tool, and all data access. Full values live in
-  [projects/api.linkittydo.com.PROJECT.md](./projects/api.linkittydo.com.PROJECT.md).
+  tool, and all data access. LinkittyDo is delivered into this existing backend
+  (schema `ExploreInfoGoer`); the live `PROJECT.md` is in the
+  [api.infogoer.com](https://github.com/philiv99/api.infogoer.com) repo (draft
+  pointer: [projects/api.linkittydo.com.PROJECT.md](./projects/api.linkittydo.com.PROJECT.md)).
 
 ### `philiv99/linkittydo-web` — single SPA
 
 - **Stack:** [react-spa](../../agentic/stacks/react-spa.md) — React 16 + Redux,
-  webpack 4, webpack‑dev‑server 3 (`NODE_OPTIONS=--openssl-legacy-provider`).
+  webpack 4 + `ftp-deploy` (`NODE_OPTIONS=--openssl-legacy-provider`), built and
+  deployed via the agentic
+  [react-spa deployment workflow](../../agentic/templates/deployment/react-spa/README.md).
 - **Owns:** all UI. Player and admin experiences live in **one** SPA; admin
   routes are gated by the `Administrator` role. A webpack **alias** switches the
   dev vs prod API base URL. Full values live in
@@ -97,8 +101,8 @@ approved SPA origins:
 
 | Environment | SPA origin | API base URL |
 | --- | --- | --- |
-| Development | `http://localhost:3000` | `http://localhost:52080/api` |
-| Production | `https://www.linkittydo.com` (and `https://linkittydo.com`) | `https://api.linkittydo.com/api` |
+| Development | `http://localhost:8080` | `http://localhost:10152/api` |
+| Production | `https://www.linkittydo.com` (and `https://linkittydo.com`) | `https://api.infogoer.com/api` |
 
 Exact origins/ports are recorded per repo in `PROJECT.md`; a CORS **preflight** is
 part of the API integration tests.
@@ -106,13 +110,14 @@ part of the API integration tests.
 ## Data
 
 - **One engine, MySQL**, with **separate dev and prod data** and a dedicated
-  **test** database (`linkittydo_test`) for integration tests.
+  **test** database (`ExploreInfoGoer_Test`) for integration tests.
 - The API repo records the database name, app user (never `root`), schema/grants
   scripts, and connection source (git‑ignored `connectionStrings.config` via
   `configSource`) in its `PROJECT.md`.
 - Schema changes stay backward‑compatible with the previous API version so a
-  rollback is safe; schema is scripted (DDL + grants + seed) under the API repo's
-  `db/` folder, drafted in [schema/schema.sql](./schema/schema.sql).
+  rollback is safe; the LinkittyDo schema is scripted under the API repo's
+  `db/linkittydo/` folder (`api.infogoer.com/db/linkittydo/schema.sql`), drafted in
+  [schema/schema.sql](./schema/schema.sql).
 
 ## Environments & releases
 

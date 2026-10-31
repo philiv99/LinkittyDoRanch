@@ -16,31 +16,39 @@ git-ignored settings and their committed *.example templates.
 
 ## Paths
 
-- **Solution / project / package paths:** `package.json` · `webpack.config.js` ·
-  `src/`
-- **Entry points:** `src/index.jsx` (`AppShell` + React Router). Config modules
-  `src/config/config.dev.js` / `src/config/config.prod.js` selected by the webpack
-  alias `config`.
+- **Solution / project / package paths:** `package.json` · `webpack.common.js` /
+  `webpack.dev.js` / `webpack.prod.js` · `ftpdeploy.js` · `src/`
+- **Entry points:** `src/index.js` (`AppShell` + React Router) with
+  `src/template.html` (HtmlWebpackPlugin). Config modules `src/devconfig.js` /
+  `src/prodconfig.js`, selected by the webpack alias `config`, each default-exporting
+  `{ IGAPIURL }` (the API base URL) plus any client-side values.
 
 ## Build, run, deploy
+
+Build/deploy files come from the agentic **react-spa deployment workflow**
+([`templates/deployment/react-spa/`](../../../agentic/templates/deployment/react-spa/README.md)),
+installed/updated by the
+[`setup-spa-deployment`](../../../agentic/templates/.github/skills/setup-spa-deployment/SKILL.md)
+skill. Each npm script sets `NODE_OPTIONS=--openssl-legacy-provider` inline.
 
 | Action | Command / script |
 | --- | --- |
 | Install / restore | `npm ci` |
-| Build | `npm run build` (`NODE_OPTIONS=--openssl-legacy-provider`) |
-| Run (local) | `npm start` (webpack‑dev‑server 3 on port **3000**, `NODE_OPTIONS=--openssl-legacy-provider`) |
-| Deploy (production, human‑run) | `npm run deploy` (`ftp-deploy` of `dist/`; aborts if FTP env vars unset) |
+| Run (local) | `npm start` (webpack‑dev‑server on port **8080**, `webpack.dev.js`) |
+| Build only | `npm run deploynoftp` (`webpack.prod.js` → `dist/`) |
+| Deploy (production, human‑run) | `npm run deploy` (build **plus** `node ftpdeploy.js`; aborts if `FTP_USER`/`FTP_PASSWORD`/`FTP_REMOTE_PATH` unset) |
 
 ## Hosts, URLs, ports
 
-- **Local run port(s):** `3000`
-- **Local base URL:** `http://localhost:3000`
-- **API base URL — dev / prod:** `http://localhost:52080/api` /
-  `https://api.linkittydo.com/api`
+- **Local run port(s):** `8080`
+- **Local base URL:** `http://localhost:8080`
+- **API base URL — dev / prod (`IGAPIURL`):** `http://localhost:10152/api` /
+  `https://api.infogoer.com/api` (the consolidated **api.infogoer.com** backend)
 - **Config module / alias that switches dev vs prod (SPA):** webpack alias
-  `config` → `config.dev.js` / `config.prod.js`
-- **Public / production URL:** `https://www.linkittydo.com`
-- **Deploy host / remote path:** `<ftp-host>` / `<remote-path>` *(confirm — O1)*
+  `config` → `src/devconfig.js` / `src/prodconfig.js`
+- **Public / production URL:** `https://www.linkittydo.com` (and `https://linkittydo.com`)
+- **Deploy host / remote path:** `ftp.infogoer.com` (`FTP_HOST` default) /
+  `FTP_REMOTE_PATH` = the LinkittyDo SPA web root on that host *(confirm the remote path)*
 
 ## Database
 
@@ -49,16 +57,18 @@ git-ignored settings and their committed *.example templates.
 ## CORS
 
 - **Allowed origins — dev / prod:** `n/a` (the API owns CORS; this SPA's origins
-  are `http://localhost:3000` dev and `https://www.linkittydo.com` prod)
+  are `http://localhost:8080` dev and `https://www.linkittydo.com` prod)
 
 ## Secrets & configuration
 
-- **Git‑ignored settings / `.env` file:** `.env` (FTP deploy credentials)
+- **Git‑ignored settings / `.env` file:** `.env` — FTP deploy credentials
+  (`FTP_USER`, `FTP_PASSWORD`, `FTP_REMOTE_PATH`, optional `FTP_HOST`)
 - **Committed example template:** `.env.example`
-- **Secrets injected at:** deploy time (shell env / `.env`)
-- **Client‑side tokens, if any:** ReCaptcha **site key** is compiled into the
-  public bundle by design — restrict & rotate it at the provider (O2), do not treat
-  it as a secret
+- **Secrets injected at:** deploy time (shell env / `.env`); `ftpdeploy.js` aborts
+  if required vars are unset
+- **Client‑side tokens, if any:** `IGAPIURL` and the ReCaptcha **site key** are
+  compiled into the public bundle by design — treat as public; restrict & rotate at
+  the provider (O2)
 
 ## Tests
 

@@ -13,7 +13,8 @@ candidate GitHub issue created via the `create-issue` skill.
   `verify.ps1` locally before push; a PR `Closes #N`; a person merges.
 - **Priority labels:** `P1` (MVP), `P2`, `P3`. Status flows Backlog → Ready → In
   progress → Review → Done.
-- Legend: **API** = `api.linkittydo.com`, **WEB** = `linkittydo-web`.
+- Legend: **API** = `api.infogoer.com` (consolidated backend), **WEB** =
+  `linkittydo-web`.
 
 ## Milestones
 
@@ -31,15 +32,21 @@ candidate GitHub issue created via the `create-issue` skill.
 
 ## M0 — Foundation
 
+> **Status (consolidation):** the API is the existing **`api.infogoer.com`** repo,
+> already onboarded to agentic (so `M0‑API‑1` is done). The foundation health
+> endpoint + LinkittyDo schema landed in `api.infogoer.com#10`; the remaining M0/M1
+> items are captured as issues `api.infogoer.com#11–#15`. DB names below are the
+> consolidated `ExploreInfoGoer` / `ExploreInfoGoer_Test`.
+
 **API**
 - `M0‑API‑1` Onboard repo: author `PROJECT.md` from the dotnet‑webapi profile, sync
   agentic assets, `.gitignore`, `README`. *Accept:* synced agents/skills appear;
   no secrets committed.
 - `M0‑API‑2` Web API 2 skeleton + `GET /api/health` + global error handling (prod
   detailed errors off). *Accept:* health returns 200; integration test green.
-- `M0‑API‑3` EF6 + MySQL wiring via `configSource`; apply `db/schema.sql`
-  (v1) + grants script (app user, not root). *Accept:* app connects to
-  `linkittydo`; `linkittydo_test` created for tests.
+- `M0‑API‑3` EF6 + MySQL wiring via `configSource`; apply `db/linkittydo/schema.sql`
+  (v1) into `ExploreInfoGoer` (covered by the existing `BirdMan` grants). *Accept:*
+  app connects to `ExploreInfoGoer`; `ExploreInfoGoer_Test` used for tests.
 - `M0‑API‑4` CORS policy (dev/prod origins) + preflight. *Accept:* `OPTIONS`
   preflight integration test passes.
 - `M0‑API‑5` `GET /api/meta/profile-options` + `GET /api/content/{key}` (seedable).
