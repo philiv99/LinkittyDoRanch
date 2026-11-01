@@ -67,12 +67,20 @@ candidate GitHub issue created via the `create-issue` skill.
 
 ## M1 — Accounts & auth (API‑first)
 
+> **Status (M1 API, api.infogoer.com):** `M1‑API‑1` register shipped (#13/#18).
+> `M1‑API‑2` activate shipped as **PR #24** (single‑use token hashed on `LK_USERS`,
+> schema → 1.2.0; `IEmailSender` no‑op until a provider is chosen — O2).
+> `M1‑API‑3` JWT login/logout/me shipped as **PR #25** (HS256 `ITokenService`,
+> in‑memory `jti` revocation, signing key via git‑ignored `appSettings.secrets.config`).
+> Remaining: `M1‑API‑4` recover, `M1‑API‑5` user/profile (needs a reusable bearer‑auth
+> filter — see gap **G12** on api.infogoer.com#15). All `M1‑WEB‑*` items are still open.
+
 **API**
 - `M1‑API‑1` `POST /api/auth/register` (+ ReCaptcha verify) creating a `pending`
-  `Player`. *Accept:* duplicate email → 409; password stored **hashed+salted**.
-- `M1‑API‑2` `POST /api/auth/activate`.
+  `Player`. *Accept:* duplicate email → 409; password stored **hashed+salted**. ✅
+- `M1‑API‑2` `POST /api/auth/activate`. ✅ (PR #24)
 - `M1‑API‑3` `POST /api/auth/login` → bearer token with role claims;
-  `POST /api/auth/logout`; `GET /api/auth/me`.
+  `POST /api/auth/logout`; `GET /api/auth/me`. ✅ (PR #25)
 - `M1‑API‑4` `POST /api/auth/recover` (name/password by email).
 - `M1‑API‑5` Users/profile: `GET/PUT /api/users/{id}`, `/props`,
   `/default-profile`. *Accept:* owner‑only; validation (`422`); concurrency via
