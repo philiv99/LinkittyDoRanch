@@ -3,6 +3,30 @@
 Notable revisions to the delivery plan. The plan is documentation; the application
 itself changes in the implementing repos (`api.infogoer.com`, `linkittydo-web`).
 
+## 2026-11-01 — M1 accounts & auth: activate + JWT login/logout/me
+
+- **`api.infogoer.com` M1-API-2 activate** delivered as **PR #24**
+  (`feat/20-auth-activate`): `POST /api/auth/activate` consumes a single-use token
+  issued at registration. Only the token's SHA-256 hash is stored on `LK_USERS`
+  (`uactivation_token_hash`, 48h `uactivation_expires_dt`, cleared on activate).
+  Email is behind a mockable `IEmailSender` (no-op until a provider is chosen — O2);
+  register surfaces the token in its response only when no provider is configured
+  (dev/tests). **DB schema → 1.2.0** (`schema.sql` + a new
+  `db/linkittydo/migrations/` convention).
+- **`api.infogoer.com` M1-API-3 JWT auth** delivered as **PR #25**
+  (`feat/21-auth-jwt`, stacked on #24): `POST /api/auth/login` (→ `{ token, user,
+  roles }`; wrong creds → 401, pending/disabled → 403), `GET /api/auth/me`,
+  `POST /api/auth/logout`. Stateless **HS256** JWT via `ITokenService`
+  (`alg:none` guarded), immediate `jti` revocation via an in-memory
+  `ITokenRevocationStore`, signing key from the git-ignored `appSettings.secrets.config`.
+- **New gaps recorded** on the api.infogoer.com living list (#15): G7–G12 — activation
+  token storage, the dev token-exposure affordance, hand-rolled HS256 vs a JWT library,
+  in-memory revocation (scale-out follow-up), production `JwtSigningKey` injection in
+  the deploy pipeline, and extracting a **reusable bearer-auth filter** before M1-API-5
+  (profile, owner-or-admin) and M2+.
+- **Remaining M1 API:** `M1-API-4` recover and `M1-API-5` user/profile; all
+  `M1-WEB-*` SPA items are still open.
+
 ## 2026-10-31 — Follow-ups complete; M0/M1 API backlog + SPA repo created
 
 - **`api.infogoer.com` M0-API-7 seed scripts** delivered as PR #19: idempotent
