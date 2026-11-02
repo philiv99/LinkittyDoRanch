@@ -3,6 +3,20 @@
 Notable revisions to the delivery plan. The plan is documentation; the application
 itself changes in the implementing repos (`api.infogoer.com`, `linkittydo-web`).
 
+## 2026-11-02 — LinkittyDo data moved to its own database (switchable connection strings)
+
+- **`api.infogoer.com`: LinkittyDo now uses a dedicated database + connection string.**
+  The `LK_*` game tables are mapped by a new `LinkittyDoDbContext` bound to a
+  **`LinkittyDoConnection`** connection string, completely separate from the InfoGoer
+  `DefaultConnection` / `APIDbContext` (BirdSighting). The active connection string is
+  selected by the optional `LinkittyDoConnectionName` appSetting (default
+  `LinkittyDoConnection`), so databases can be switched (dev/test/prod, or back to a
+  single shared DB via `DefaultConnection`) without recompiling. `Deploy-Ftp.ps1` injects
+  both connection strings from the `Db` + optional `LinkittyDb` blocks; the `db/linkittydo`
+  schema/seed scripts default to a separate **`linkittydoranch`** database. Supersedes the
+  earlier "LK_* live inside ExploreInfoGoer" placement; recorded as decision **D13**;
+  extends PR #26.
+
 ## 2026-11-01 — M1 accounts & auth: activate + JWT login/logout/me
 
 - **`api.infogoer.com` M1-API-2 activate** delivered as **PR #24**

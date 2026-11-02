@@ -2,8 +2,9 @@
 -- LinkittyDoRanch — MySQL schema (v1 DRAFT)
 -- Target: MySQL 8.x, InnoDB, utf8mb4.  Served by api.infogoer.com (EF6).
 -- This is the PLANNING draft under plan/schema. The authoritative copy now lives
--- at api.infogoer.com/db/linkittydo/schema.sql and targets the ExploreInfoGoer
--- database (the consolidated backend). Derived from the four original SQL Server
+-- at api.infogoer.com/db/linkittydo/schema.sql and targets a DEDICATED
+-- `linkittydoranch` database (separate from ExploreInfoGoer), reached through the
+-- LinkittyDoConnection connection string. Derived from the four original SQL Server
 -- ER diagrams; NO data is migrated. See plan/02-data-model.md for column notes and
 -- deviations.
 --
@@ -11,9 +12,9 @@
 -- concurrency token, EF6-mapped). IDs are INT AUTO_INCREMENT except LK_USERS.
 -- =============================================================================
 
-CREATE DATABASE IF NOT EXISTS linkittydo
+CREATE DATABASE IF NOT EXISTS linkittydoranch
   CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE linkittydo;
+USE linkittydoranch;
 
 SET FOREIGN_KEY_CHECKS = 0;
 

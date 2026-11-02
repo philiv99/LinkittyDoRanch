@@ -44,8 +44,10 @@ both calling one API contract.
   below). Language choice is recorded as a decision in
   [08-risks-and-decisions.md](./08-risks-and-decisions.md).
 - **Owns:** the versioned HTTP contract, business logic (managers), the parser
-  tool, and all data access. LinkittyDo is delivered into this existing backend
-  (schema `ExploreInfoGoer`); the live `PROJECT.md` is in the
+  tool, and all data access. LinkittyDo is delivered into this existing backend, with
+  its `LK_*` data in a **dedicated `linkittydoranch` database** (reached via a separate
+  `LinkittyDoConnection`) rather than InfoGoer's `ExploreInfoGoer`; the live `PROJECT.md`
+  is in the
   [api.infogoer.com](https://github.com/philiv99/api.infogoer.com) repo (draft
   pointer: [projects/api.linkittydo.com.PROJECT.md](./projects/api.linkittydo.com.PROJECT.md)).
 
@@ -109,8 +111,11 @@ part of the API integration tests.
 
 ## Data
 
-- **One engine, MySQL**, with **separate dev and prod data** and a dedicated
-  **test** database (`ExploreInfoGoer_Test`) for integration tests.
+- **One engine, MySQL**, with **separate dev and prod data**. InfoGoer data
+  (BirdSighting) uses `ExploreInfoGoer`; LinkittyDo's `LK_*` data uses its **own
+  `linkittydoranch`** database via a dedicated, **switchable** `LinkittyDoConnection`
+  (`LinkittyDoConnectionName` appSetting). A dedicated **test** database is used for
+  integration tests.
 - The API repo records the database name, app user (never `root`), schema/grants
   scripts, and connection source (git‑ignored `connectionStrings.config` via
   `configSource`) in its `PROJECT.md`.
