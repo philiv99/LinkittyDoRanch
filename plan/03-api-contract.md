@@ -90,8 +90,9 @@ authoritative route list referenced from the API repo's `PROJECT.md`.
 | `POST /api/plays/{id}/clues` | owner | **Request a new clue** for an unsolved position `{ ordinal }`. Server selects a clue (random / favor prior weighted), records `LK_CLUES_PLAYED`, returns the clue's links (url, title) per the profile display style. |
 | `GET /api/plays/{id}/clues` | owner | Clues revealed so far (the Clues tab: date, URL, page title). |
 | `POST /api/plays/{id}/guesses` | owner | **Submit a guess** `{ ordinal, words }`. Returns correctness, updated solved ordinals, score, and whether the game is solved. Applies weight reinforcement. |
-| `GET /api/plays/{id}/guesses` | owner | Guess history (the Guesses tab). |
+| `GET /api/plays/{id}/guesses` | owner | Guess history (the Guesses tab). Each guess includes whether it was `correct`. |
 | `POST /api/plays/{id}/giveup` | owner | "I give up" → status `quit`. |
+| `GET /api/leaderboard` | any logged-in | Top players ranked by total score across their played games → `[{ rank, playerId, nickname, totalScore, gamesSolved, gamesPlayed }]`. Optional `?top=N` (default 10, max 50). Rendered as a side panel beside the central workspace for admins and players. |
 
 ### Admin (P1)
 

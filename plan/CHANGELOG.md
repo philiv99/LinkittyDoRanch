@@ -3,6 +3,19 @@
 Notable revisions to the delivery plan. The plan is documentation; the application
 itself changes in the implementing repos (`api.infogoer.com`, `linkittydo-web`).
 
+## 2026-11-12 — Player leaderboard (side panel for signed-in users)
+
+- **`api.infogoer.com`: new `GET /api/leaderboard` read.** Ranks players by total
+  score accrued across their played games (`LK_PLAYED_GAMES` grouped by `player_id`,
+  joined to `LK_USERS` for nicknames) → `[{ rank, playerId, nickname, totalScore,
+  gamesSolved, gamesPlayed }]`. Visible to **any authenticated user** (admin or
+  player); `401` for unauthenticated callers. Optional `?top=N` (default 10, max 50).
+  Recorded in `03-api-contract.md` under **Play**.
+- **`linkittydo-web`: Leaderboard side panel.** Every signed-in view now renders a
+  **Leaderboard** panel to the right of the central workspace (collapsing below it on
+  narrow screens), highlighting the current user's row. Implements the API contract
+  above.
+
 ## 2026-11-02 — LinkittyDo data moved to its own database (switchable connection strings)
 
 - **`api.infogoer.com`: LinkittyDo now uses a dedicated database + connection string.**
