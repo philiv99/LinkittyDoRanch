@@ -87,7 +87,7 @@ authoritative route list referenced from the API repo's `PROJECT.md`.
 | `POST /api/plays` | player | Start a played game `{ gameId, parseId }` → `playedGameId`, status `started`. |
 | `GET /api/plays` | player | Caller's play history (Games History: new/old games). |
 | `GET /api/plays/{id}` | owner | Play state: counts, solved ordinals, score, status, the parse skeleton. |
-| `POST /api/plays/{id}/clues` | owner | **Request a new clue** for an unsolved position `{ ordinal }`. Server selects a clue (random / favor prior weighted), records `LK_CLUES_PLAYED`, returns the clue's links (url, title) per the profile display style. |
+| `POST /api/plays/{id}/clues` | owner | **Request a new clue** for an unsolved position `{ ordinal }`. Server selects a clue (random / favor prior weighted), records `LK_CLUES_PLAYED`, returns the clue's links (url, title) per the profile display style. Skips URLs already shown for another word so each word's first clue is distinct. |
 | `GET /api/plays/{id}/clues` | owner | Clues revealed so far (the Clues tab: date, URL, page title). |
 | `POST /api/plays/{id}/guesses` | owner | **Submit a guess** `{ ordinal, words }`. Returns correctness, updated solved ordinals, score, and whether the game is solved. Applies weight reinforcement. |
 | `GET /api/plays/{id}/guesses` | owner | Guess history (the Guesses tab). Each guess includes whether it was `correct`. |

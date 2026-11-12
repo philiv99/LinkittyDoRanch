@@ -3,6 +3,17 @@
 Notable revisions to the delivery plan. The plan is documentation; the application
 itself changes in the implementing repos (`api.infogoer.com`, `linkittydo-web`).
 
+## 2026-11-12 — Game Play interaction redesign + distinct per-word clues
+
+- **`api.infogoer.com`: distinct first clue per word.** `POST /api/plays/{id}/clues`
+  now skips a generated clue URL that was already shown for another word in the same
+  played game (Tavily can return the same top result for different single-word queries),
+  so each word's first clue is distinct. Recorded in `03-api-contract.md`.
+- **`linkittydo-web`: fill-in-the-blank Game Play.** Hidden words are underlined inline
+  inputs (type the guess directly, submit on Enter; the arrow button was removed), each
+  with a 💡 "New clue" icon in its upper-left corner. Word/Clue tabs are now content-width
+  file-folder tabs. Help text updated to match.
+
 ## 2026-11-12 — Player leaderboard (side panel for signed-in users)
 
 - **`api.infogoer.com`: new `GET /api/leaderboard` read.** Ranks players by total
