@@ -3,6 +3,18 @@
 Notable revisions to the delivery plan. The plan is documentation; the application
 itself changes in the implementing repos (`api.infogoer.com`, `linkittydo-web`).
 
+## 2026-11-12 — Robust, difficulty-aware clue search
+
+- **`api.infogoer.com`: clue reveal hardening.** `POST /api/plays/{id}/clues` now
+  guarantees the chosen clue is iframe-embeddable (browser-control accessible),
+  difficulty-filters medium+ clues by inspecting the page raw content (word must not be
+  prominent), never reuses a URL previously shown for that word in that game, and repeats
+  the Tavily search with a growing `exclude_domains` list when every candidate is filtered.
+  **Tavily API investigation:** supports domain-level `exclude_domains` only (no per-URL
+  exclusion, no pagination) and per-result `raw_content` via `include_raw_content`; we
+  filter exact URLs client-side and loop the search for fresh results. Recorded in
+  `03-api-contract.md`.
+
 ## 2026-11-12 — Per-play difficulty levels with clue-prominence filtering
 
 - **`api.infogoer.com`: difficulty levels.** `POST /api/plays` accepts an optional
