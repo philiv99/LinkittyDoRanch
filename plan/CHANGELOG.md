@@ -3,6 +3,17 @@
 Notable revisions to the delivery plan. The plan is documentation; the application
 itself changes in the implementing repos (`api.infogoer.com`, `linkittydo-web`).
 
+## 2026-11-12 — Per-play difficulty levels with clue-prominence filtering
+
+- **`api.infogoer.com`: difficulty levels.** `POST /api/plays` accepts an optional
+  `difficulty` (1=easy default, 2=medium; `422` for unsupported values), persisted on
+  the new `LK_PLAYED_GAMES.pgdifficulty` column (migration `1.6.0`). At
+  `POST /api/plays/{id}/clues`, medium+ drops generated clue URLs where the guessed word
+  is prominent — in the URL, page title, or bolded/heading text. Recorded in
+  `02-data-model.md` and `03-api-contract.md`.
+- **`linkittydo-web`: difficulty picker.** The player's New-game toolbar has an
+  Easy/Medium selector; the level is passed to `POST /api/plays` and shown per play.
+
 ## 2026-11-12 — Game Play interaction redesign + distinct per-word clues
 
 - **`api.infogoer.com`: distinct first clue per word.** `POST /api/plays/{id}/clues`
