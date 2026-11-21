@@ -5,6 +5,15 @@ itself changes in the implementing repos (`api.infogoer.com`, `linkittydo-web`).
 
 ## 2026-11-21 — Hard (level 3) difficulty: synonym-based clue discovery
 
+- **`api.infogoer.com`: iframe-incompatible clue pages are rejected.** Clue
+  inspection now requires a successful fetch before reveal. Failed HTTP responses,
+  redirects to a final URL with answer-word prominence, and confirmed `X-Frame-Options`
+  / CSP framing blocks are rejected instead of reaching the SPA iframe. This addresses
+  browser-console errors such as Facebook `X-Frame-Options: DENY` and Merriam-Webster
+  `SAMEORIGIN`. Recorded in `03-api-contract.md`. (`api.infogoer.com#52`)
+- **`linkittydo-web`: clue iframe external fallback.** Game Play shows an **Open clue
+  in new tab** link above every iframe so previously revealed clues and pages that later
+  change framing policy remain usable even when Chrome blocks embedding. (`linkittydo-web#28`)
 - **`api.infogoer.com`: synonym-based Hard clues.** `POST /api/plays` now accepts
   `difficulty=3` (hard), persisted on `LK_PLAYED_GAMES.pgdifficulty` (no DDL — the column
   is already `INT`). At `POST /api/plays/{id}/clues`, hard seeds the Tavily query with a
