@@ -35,7 +35,7 @@ The plan obeys the rules in the sibling [`../../agentic`](../../agentic) repo:
 | Decision | Choice |
 | --- | --- |
 | Front‑end topology | **One SPA** (`linkittydo-web`) serving both player and admin routes; admin routes gated by the `Administrator` role. |
-| Backend repo | **Consolidated into the existing `api.infogoer.com`** (shared backend, schema `ExploreInfoGoer`) — not a new `api.linkittydo.com`. |
+| Backend repo | **Consolidated into the existing `api.infogoer.com`** — not a new `api.linkittydo.com`. LinkittyDo data lives in its **own** `linkittydoranch` database (dedicated `LinkittyDoConnection`, switchable), **not** in `ExploreInfoGoer`. |
 | SPA deployment | `linkittydo-web` uses the agentic **react-spa deployment workflow** (webpack 4 + `ftpdeploy.js` to `ftp.infogoer.com`). |
 | First release (P1) scope | Accounts & auth · Game catalog & browse · Game play · Game creation + NLP parser · Admin console. |
 | Deferred to P2/P3 | **Societies** (social) and **News / home content** polish. |
@@ -47,7 +47,7 @@ The plan obeys the rules in the sibling [`../../agentic`](../../agentic) repo:
 
 | Repo | Stack | Role |
 | --- | --- | --- |
-| `philiv99/api.infogoer.com` *(existing, extended)* | [dotnet-webapi](../../agentic/stacks/dotnet-webapi.md) | Shared HTTP API: accounts, games, play, admin, parser tool, data access to MySQL. LinkittyDo is delivered into this existing backend (schema `ExploreInfoGoer`) rather than a new repo. |
+| `philiv99/api.infogoer.com` *(existing, extended)* | [dotnet-webapi](../../agentic/stacks/dotnet-webapi.md) | Shared HTTP API: accounts, games, play, admin, parser tool, data access to MySQL. LinkittyDo is delivered into this existing backend but stores its `LK_*` data in its own `linkittydoranch` database (via `LinkittyDoConnection`) rather than a new repo. |
 | `philiv99/linkittydo-web` *(new)* | [react-spa](../../agentic/stacks/react-spa.md) | Single React SPA: public game site **and** admin console (role‑gated); built/deployed via the agentic react-spa deployment workflow. |
 
 > **Consolidation (confirmed):** the backend is **not** a new `api.linkittydo.com`

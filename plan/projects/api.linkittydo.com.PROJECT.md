@@ -17,9 +17,9 @@
 | Repo | `philiv99/api.infogoer.com` (`dotnet-webapi`: Web API 2 / .NET 4.7.2 / EF6 / MySQL) |
 | Local base URL | `http://localhost:10152/api` |
 | Production base URL | `https://api.infogoer.com/api` |
-| Database / test DB | `ExploreInfoGoer` / `ExploreInfoGoer_Test` |
+| Database / test DB | InfoGoer: `ExploreInfoGoer` / `ExploreInfoGoer_Test`; LinkittyDo: `linkittydoranch` (own DB) |
 | App DB user | `BirdMan` (never `root`) |
-| LinkittyDo schema | `db/linkittydo/schema.sql` (LK_* tables in `ExploreInfoGoer`) |
+| LinkittyDo schema | `db/linkittydo/schema.sql` (LK_* tables in the dedicated `linkittydoranch` DB via `LinkittyDoConnection`) |
 | Build / verify | `verify.ps1` (restore → MSBuild Release → `dotnet test`) |
 | Deploy (human-run) | `deploy/Deploy-Ftp.ps1` (FTPS; database backup first) |
 

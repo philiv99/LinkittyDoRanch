@@ -84,14 +84,15 @@ authoritative route list referenced from the API repo's `PROJECT.md`.
 
 | Method & path | Access | Purpose |
 | --- | --- | --- |
-| `POST /api/plays` | player | Start a played game `{ gameId, parseId }` → `playedGameId`, status `started`. |
+| `POST /api/plays` | player | Start a played game `{ gameId, parseId, difficulty? }` → `playedGameId`, status `started`. `difficulty` is `1`=easy (default), `2`=medium (clue prominence filtered), or `3`=hard (synonym-based clue discovery, also prominence filtered); unsupported values → `422`. Persisted on `LK_PLAYED_GAMES.pgdifficulty` and echoed back as `difficulty`. |
 | `GET /api/plays` | player | Caller's play history (Games History: new/old games). |
 | `GET /api/plays/{id}` | owner | Play state: counts, solved ordinals, score, status, the parse skeleton. |
-| `POST /api/plays/{id}/clues` | owner | **Request a new clue** for an unsolved position `{ ordinal }`. Server selects a clue (random / favor prior weighted), records `LK_CLUES_PLAYED`, returns the clue's links (url, title) per the profile display style. |
+| `POST /api/plays/{id}/clues` | owner | **Request a new clue** for an unsolved position `{ ordinal }`. Server selects a clue (curated first, else Tavily-generated), records `LK_CLUES_PLAYED`, returns the clue's links (url, title) per the profile display style. The chosen clue is verified **iframe-embeddable** (browser control accessible), never reuses a URL already shown for that word in that game, and — at medium+ difficulty — rejects pages where the guessed word is prominent (URL, title, or raw page content). At **hard** difficulty the Tavily query is seeded with a **synonym** of the target word (from `LK_WORDS` via `ISynonymRepository.GetRandomSynonym`) instead of the word itself, so clue pages are about a related word (falling back to the word when it has no synonym, or when the synonym dictionary is unavailable — the lookup is best-effort and never fails the clue request); the answer-word prominence filter still applies and synonym-discovered links are tagged `tavily-synonym`. If every candidate is filtered, the Tavily search repeats with a growing `exclude_domains` list (Tavily has no per-URL exclusion or pagination). |
 | `GET /api/plays/{id}/clues` | owner | Clues revealed so far (the Clues tab: date, URL, page title). |
 | `POST /api/plays/{id}/guesses` | owner | **Submit a guess** `{ ordinal, words }`. Returns correctness, updated solved ordinals, score, and whether the game is solved. Applies weight reinforcement. |
-| `GET /api/plays/{id}/guesses` | owner | Guess history (the Guesses tab). |
+| `GET /api/plays/{id}/guesses` | owner | Guess history (the Guesses tab). Each guess includes whether it was `correct`. |
 | `POST /api/plays/{id}/giveup` | owner | "I give up" → status `quit`. |
+| `GET /api/leaderboard` | any logged-in | Top players ranked by total score across their played games → `[{ rank, playerId, nickname, totalScore, gamesSolved, gamesPlayed }]`. Optional `?top=N` (default 10, max 50). Rendered as a side panel beside the central workspace for admins and players. |
 
 ### Admin (P1)
 
