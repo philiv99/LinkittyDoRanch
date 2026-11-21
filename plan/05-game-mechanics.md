@@ -92,6 +92,21 @@ Record `LK_CLUES_PLAYED` (initial `cpweight`), increment `pgclue_count`, and ret
 the clue's links (url + title) rendered per the profile **display style**. Only
 URLs for words **not yet guessed** are generated/shown.
 
+**Per‑play difficulty** (`LK_PLAYED_GAMES.pgdifficulty`, chosen at start) tunes how a
+generated clue is discovered/filtered:
+
+- **Easy (1):** the top search result is used as‑is.
+- **Medium (2):** candidate pages where the guessed word is **prominent** (in the URL,
+  title, or bolded/heading/lead content) are rejected, so clues give the answer away
+  less often.
+- **Hard (3):** the search is seeded with a **synonym** of the word (from `LK_WORDS`)
+  instead of the word itself — realising the design's *related‑word* clue discovery
+  (§ "Related‑word generation") at play time — so clue pages are about a related word.
+  When the word has no synonym — or the `LK_WORDS` dictionary is unavailable (the lookup
+  is best‑effort and never fails the clue request) — the search falls back to the word.
+  Medium's answer‑word prominence filter still applies, and synonym‑discovered links are
+  tagged `tavily-synonym`.
+
 ### Submit a guess — `POST /api/plays/{id}/guesses`
 Record `LK_GUESSES` (`guordinal`, `guwords`), increment `pgguess_count`, then
 evaluate against the target position's `pnsub_phrase`:

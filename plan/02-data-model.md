@@ -72,7 +72,7 @@ link).
 
 | Table | Key columns | Other columns | Notes |
 | --- | --- | --- | --- |
-| `LK_PLAYED_GAMES` | `played_game_id` INT PK | `player_id` FK→`LK_USERS`, `game_id` FK, `parse_id` FK, `pgclue_count` INT, `pgguess_count` INT, `pgstart_date`, `pgsolve_date`, `pgstatus` VARCHAR(20), `pgscore` INT, `pgdifficulty` INT DEFAULT 1 | One player's attempt at a game against a chosen parse. `pgdifficulty` is the player-chosen level (1=easy, 2=medium; more later) used to filter clue prominence. |
+| `LK_PLAYED_GAMES` | `played_game_id` INT PK | `player_id` FK→`LK_USERS`, `game_id` FK, `parse_id` FK, `pgclue_count` INT, `pgguess_count` INT, `pgstart_date`, `pgsolve_date`, `pgstatus` VARCHAR(20), `pgscore` INT, `pgdifficulty` INT DEFAULT 1 | One player's attempt at a game against a chosen parse. `pgdifficulty` is the player-chosen level (1=easy, 2=medium, 3=hard; more later): medium+ filters clue prominence and hard also seeds clue search with a synonym of the word. |
 | `LK_CLUES_PLAYED` | (`played_game_id`,`clue_id`) PK | `cpweight` FLOAT | Clues revealed in this attempt + their reinforcement weight. |
 | `LK_SOLVED_ORDINALS` | (`played_game_id`,`soordinal`) PK | — | Which parse positions are solved. |
 | `LK_GUESSES` | `guess_id` INT PK **(added surrogate)** | `played_game_id` FK, `guordinal` INT, `guwords` VARCHAR(255) | **Reconciliation:** the ERD keys on (`played_game_id`,`guordinal`), but the play wireframe shows **multiple guesses per ordinal** over time. A surrogate `guess_id` is added; (`played_game_id`,`guordinal`,`create_dt`) is indexed. |
