@@ -3,6 +3,21 @@
 Notable revisions to the delivery plan. The plan is documentation; the application
 itself changes in the implementing repos (`api.infogoer.com`, `linkittydo-web`).
 
+## 2026-11-21 — Hard (level 3) difficulty: synonym-based clue discovery
+
+- **`api.infogoer.com`: synonym-based Hard clues.** `POST /api/plays` now accepts
+  `difficulty=3` (hard), persisted on `LK_PLAYED_GAMES.pgdifficulty` (no DDL — the column
+  is already `INT`). At `POST /api/plays/{id}/clues`, hard seeds the Tavily query with a
+  **synonym** of the target word (`LK_WORDS` via `ISynonymRepository.GetRandomSynonym`)
+  instead of the word, so clue pages are about a related word (falls back to the word when
+  it has no synonym). Medium's answer-word prominence filter still applies (hard ⊇ medium);
+  synonym-discovered links are tagged `tavily-synonym`. Realises the design's
+  *related-word* clue discovery at play time. Recorded in `02-data-model.md`,
+  `03-api-contract.md`, and `05-game-mechanics.md`. (`api.infogoer.com#51` / `#52`)
+- **`linkittydo-web`: Hard picker option.** The New-game difficulty selector adds a
+  **Hard** level that sends `difficulty: 3` and labels the level per play.
+  (`linkittydo-web#27` / `#28`)
+
 ## 2026-11-12 — Robust, difficulty-aware clue search
 
 - **`api.infogoer.com`: clue reveal hardening.** `POST /api/plays/{id}/clues` now
