@@ -102,9 +102,10 @@ generated clue is discovered/filtered:
 - **Hard (3):** the search is seeded with a **synonym** of the word (from `LK_WORDS`)
   instead of the word itself — realising the design's *related‑word* clue discovery
   (§ "Related‑word generation") at play time — so clue pages are about a related word.
-  When the word has no synonym the search falls back to the word. Medium's answer‑word
-  prominence filter still applies, and synonym‑discovered links are tagged
-  `tavily-synonym`.
+  When the word has no synonym — or the `LK_WORDS` dictionary is unavailable (the lookup
+  is best‑effort and never fails the clue request) — the search falls back to the word.
+  Medium's answer‑word prominence filter still applies, and synonym‑discovered links are
+  tagged `tavily-synonym`.
 
 ### Submit a guess — `POST /api/plays/{id}/guesses`
 Record `LK_GUESSES` (`guordinal`, `guwords`), increment `pgguess_count`, then
